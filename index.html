@@ -16360,10 +16360,16 @@ function Home() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
 		/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
 			className: "site-header",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-				className: "brand",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+				className: "brand kawakami-brand",
 				href: "#top",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: ["KAWAKAMI FOODS", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", { children: "OKINAWA, JAPAN · SINCE 1958" })] })
+				"aria-label": "Kawakami Foods, back to top",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
+					src: "https://kawakami-business-survey.chiekouetsuka.chatgpt.site/assets/kawakami-logo.png",
+					alt: "川上食品",
+					width: "327",
+					height: "73"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", { children: "KAWAKAMI FOODS" })]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("nav", {
 				className: "header-actions",
 				"aria-label": "Product information",
@@ -16503,5 +16509,12 @@ h1,h2,h3,p{margin-top:0}h1,h2,h3,.footer-brand,.brand{font-family:'Cormorant Gar
 @media(max-height:550px){.hero{height:420px}.hero-partner-card{bottom:28%}.hero-heading{top:16px}}
 .header-actions{display:flex;align-items:center;gap:24px;margin-left:16px}.product-details-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 16px;border:1px solid #d7ae6e;border-radius:3px;color:#fff5e8;font:500 14px/1.2 Inter,Arial,sans-serif;text-align:center}.product-details-link:hover{background:#433020}.site-header{gap:12px}
 @media(max-width:750px){.header-actions{margin-left:auto;gap:0}.site-header{padding-inline:4%;gap:10px}.site-header .brand{font-size:clamp(15px,4.5vw,21px);letter-spacing:.035em}.site-header .brand small{font-size:clamp(7px,1.95vw,10px);letter-spacing:.08em}.product-details-link{width:82px;padding:8px;flex-shrink:0}.header-actions .survey-label{display:none}}
+/* Shared brand lockup: same artwork and English caption as the corporate LP. */
+.site-header{background:#241711;color:#f6f0e5;min-height:76px;gap:12px;padding-inline:5%;border-bottom:1px solid #3a2921}
+.site-header .kawakami-brand{display:flex;flex-direction:column;align-items:flex-start;gap:0;flex-shrink:0;line-height:1;letter-spacing:0}
+.kawakami-brand img{display:block;width:205px;height:auto;filter:brightness(0) invert(1)}
+.site-header .kawakami-brand small{display:block;margin-top:5px;font:600 .65rem/1.2 Arial,sans-serif;letter-spacing:.14em;color:#f6f0e5}
+@media(max-width:750px){.site-header{padding-inline:4%;gap:8px;min-height:70px}.kawakami-brand img{width:170px}.site-header .kawakami-brand small{font-size:.58rem;letter-spacing:.12em;margin-top:4px}}
+@media(max-width:340px){.kawakami-brand img{width:140px}.site-header .kawakami-brand small{font-size:.54rem}}
 /*$vite$:1*/</style>
 </head><body><div id="root"></div></body></html>
