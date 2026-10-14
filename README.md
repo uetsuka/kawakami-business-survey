@@ -1,18 +1,36 @@
-# Kawakami Foods — Singapore Business Survey
+# 川上食品｜LP・アンケート共有
 
-English survey for Singapore buyers, restaurants, wholesalers and corporate partners.
+シンガポール市場向けのLP・アンケートをまとめています。以下の公開ページはログインせずに閲覧できます。
 
-Live website: https://uetsuka.github.io/kawakami-business-survey/
+## 制作物を見る
 
-## Editing and publication
+| 対象 | LP・製品紹介 | アンケート |
+| --- | --- | --- |
+| バイヤー・レストラン・卸・企業 | [法人向けLP・製品一覧](https://kawakami-b2b-wf-preview.chiekouetsuka.chatgpt.site/) | [法人向けアンケート](https://uetsuka.github.io/kawakami-business-survey/#survey) |
+| 消費者：Family／家族の食卓 | [Family LP](https://kawakami-consumer-survey.chiekouetsuka.chatgpt.site/family) | [Family アンケート](https://kawakami-consumer-survey.chiekouetsuka.chatgpt.site/family#q-0) |
+| 消費者：Everyday／日常の食体験 | [Everyday LP](https://kawakami-consumer-survey.chiekouetsuka.chatgpt.site/fresh) | [Everyday アンケート](https://kawakami-consumer-survey.chiekouetsuka.chatgpt.site/fresh#q-0) |
+| 消費者：Craft／歴史と職人の技 | [Craft LP](https://kawakami-consumer-survey.chiekouetsuka.chatgpt.site/craft) | [Craft アンケート](https://kawakami-consumer-survey.chiekouetsuka.chatgpt.site/craft#q-0) |
 
-Questions: `lib/questions.ts`.
-Survey text and layout: `app/survey.tsx`.
-Main visual: `app/hero.tsx`.
-Styles: `app/globals.css`, `app/survey.css`, `app/header.css`.
+法人向け・消費者向けともに英語、全12問です。消費者向け3案の質問は共通です。
 
-Install Node.js 22.13 or later, then run `npm install` and `npm run build`. Copy `github-pages/dist/index.html` to the repository root as `index.html` and commit it to `main`. GitHub Pages publishes from the root of `main`.
+## リポジトリ
 
-## Response storage
+- [法人向けアンケート（このリポジトリ）](https://github.com/uetsuka/kawakami-business-survey)
+- [消費者向けLP・アンケート](https://github.com/uetsuka/kawakami-consumer-survey)
 
-Responses are sent over HTTPS to https://kawakami-business-survey.chiekouetsuka.chatgpt.site/api/responses and saved in the existing private database. Images are served from the same site. Survey answers and contact details are never committed to this repository. Google Sheets synchronisation and email notification setup are still separate work.
+法人アンケート画面はGitHub Pagesで公開しています。製品紹介LPと消費者向けLPは、上記の公開サイトへリンクしています。
+
+## レビューする方へ
+
+画面や質問をご覧いただけます。試しに送信する場合、回答は記録されるため、実在する個人情報ではなくテスト用の情報をお使いください。
+
+回答データ・回答者の連絡先・接続キーはこのリポジトリに含めません。
+
+## 編集・公開手順
+
+質問：`lib/questions.ts`。アンケート：`app/survey.tsx`。MV：`app/hero.tsx`。
+スタイル：`app/globals.css`、`app/survey.css`、`app/header.css`。
+
+Node.js 22.13以上で `npm install`、`npm run build` を実行し、`github-pages/dist/index.html` をルートの `index.html` にコピーしてmainへコミットします。GitHub Pagesはmainのルートから公開します。
+
+回答保存と画像配信には既存のサイトサーバーを使用します。スプレッドシートへの自動転記と自動メールの配信開始は、画面公開とは別に進めています。
