@@ -1,11 +1,18 @@
 # Kawakami Foods — Singapore Business Survey
 
-English business survey for buyers, restaurants, wholesalers and corporate partners.
+English survey for Singapore buyers, restaurants, wholesalers and corporate partners.
 
-## Publication
+Live website: https://uetsuka.github.io/kawakami-business-survey/
 
-GitHub Pages publishes `index.html` from the root of `main`. The page contains the compiled application and styles. Images are served from the existing Kawakami Foods site.
+## Editing and publication
 
-Responses are sent over HTTPS to `https://kawakami-business-survey.chiekouetsuka.chatgpt.site/api/responses` and stored in the existing private database. Responses and email addresses are never committed to this repository. Google Sheets synchronisation and email notifications are separate from this publication.
+Questions: `lib/questions.ts`.
+Survey text and layout: `app/survey.tsx`.
+Main visual: `app/hero.tsx`.
+Styles: `app/globals.css`, `app/survey.css`, `app/header.css`.
 
-The page includes 12 questions, automatic question scrolling, a rotating main visual, and optional business follow-up details.
+Install Node.js 22.13 or later, then run `npm install` and `npm run build`. Copy `github-pages/dist/index.html` to the repository root as `index.html` and commit it to `main`. GitHub Pages publishes from the root of `main`.
+
+## Response storage
+
+Responses are sent over HTTPS to https://kawakami-business-survey.chiekouetsuka.chatgpt.site/api/responses and saved in the existing private database. Images are served from the same site. Survey answers and contact details are never committed to this repository. Google Sheets synchronisation and email notification setup are still separate work.

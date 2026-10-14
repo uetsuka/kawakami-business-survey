@@ -1,0 +1,4 @@
+node_modules/
+github-pages/dist/
+.DS_Store
+.env*
