@@ -16018,42 +16018,66 @@ var products = [
 	[
 		"Shima Tofu",
 		"shima.webp",
-		"Firm tofu for stir-fries and simmered dishes."
+		"Firm Okinawan tofu for a quick pan-fry. Season to taste, scatter with spring onions, and add cabbage or carrots if you like.",
+		"Quick Okinawan tofu stir-fry",
+		"3–10 min",
+		"Drain the tofu and cut into bite-sized pieces. Pan-fry in a little oil until lightly golden. Add cabbage or carrots if you like and cook until tender. Season to taste and scatter with spring onions. A quick main or side dish for everyday meals."
 	],
 	[
 		"Yushi Tofu",
 		"yushi.webp",
-		"Soft tofu curds with a delicate texture."
+		"Soft tofu curds for a quick warm meal. Enjoy with an Okara Spoon and optional spring onions and grated ginger.",
+		"Warm Yushi Tofu, ready to enjoy",
+		"3–5 min",
+		"Follow the heating instructions on the pack. Heat in the original container only if the pack specifies that it is suitable; otherwise use a microwave-safe dish. Add spring onions and grated ginger if you like. Enjoy straight from the suitable serving container with an Okara Spoon. An easy warm meal for busy parents, including households with a baby. Preparation time is an estimate; follow the heating time and method on the pack."
 	],
 	[
 		"Atsuage",
 		"atsuage.webp",
-		"Thick fried tofu, golden outside and soft inside."
+		"Pan-seared tofu steak with a simple soy sauce, water and sugar sauce, made with plant-based ingredients.",
+		"Quick plant-based atsuage steak",
+		"3–10 min",
+		"Pat the atsuage dry and keep it in thick steak-sized portions. Heat a little vegetable oil and sear both sides until golden and heated through. Simmer soy sauce, water and a little sugar into a sauce, then spoon over the atsuage. A simple tofu steak for vegan and vegetarian menus. Use plant-based sauces and seasonings, without butter, fish stock or oyster sauce."
 	],
 	[
 		"Silken & Soft Tofu",
 		"silken.webp",
-		"Smooth tofu for chilled dishes and soups."
+		"Smooth tofu served chilled with spring onions, grated ginger and your preferred dressing.",
+		"Chilled tofu with fresh toppings",
+		"5 min",
+		"Gently drain the chilled tofu and place on small plates. Add spring onions and grated ginger. Add your preferred dressing just before serving. A light starter or small side dish."
 	],
 	[
 		"Jimami Tofu",
 		"jimami.webp",
-		"Okinawan peanut tofu. Contains peanuts."
+		"A smooth, springy Okinawan peanut dessert to enjoy with a sweet sauce. Contains peanuts.",
+		"An Okinawan peanut dessert",
+		"5 min",
+		"Prepare small dessert plates and your chosen sweet sauce. Carefully portion the tofu onto each plate. Add a little sweet sauce and enjoy its smooth, springy texture. An Okinawan sweet treat after a meal or during a break. Contains peanuts."
 	],
 	[
 		"Aburaage",
 		"aburaage.png",
-		"Thin fried tofu for soups and simmered dishes."
+		"Thin fried tofu that soaks up the flavours of laksa-style coconut soup.",
+		"Aburaage in laksa-style soup",
+		"5–10 min",
+		"Cut the aburaage into bite-sized pieces. Add to prepared laksa-style coconut soup and heat through. Pair with noodles and cooked vegetables, letting the aburaage soak up the soup. A familiar Singapore-inspired soup with an Okinawan tofu twist. Time assumes prepared soup; allow additional time for noodles and vegetables as needed."
 	],
 	[
 		"Dried Okara",
 		"dried-okara.png",
-		"Dried soybean pulp from tofu production, supplied as a food ingredient."
+		"Okara from Okinawan tofu-making for bread and cookies. Replace part of the wheat flour using a suitable recipe.",
+		"Bake with okara: bread & cookies",
+		"Varies by recipe",
+		"Choose a bread or cookie recipe designed to include dried okara. Replace part of the wheat flour with dried okara according to the recipe, adjusting the liquid as directed. Shape and bake according to the recipe. Bring okara from Okinawan tofu-making into everyday baking."
 	],
 	[
 		"Okara Spoon",
 		"okara-spoon.jpg",
-		"An edible spoon made with okara. Contains wheat, egg and soy."
+		"An edible spoon made with okara from tofu-making. Enjoy with dessert and explore food and ingredients together. Contains wheat, egg and soy.",
+		"An edible spoon to enjoy together",
+		"2–5 min",
+		"Place a small dessert portion in a bowl or tasting cup. Add the Okara Spoon just before serving. Enjoy the dessert and edible spoon, and talk together about the ingredients and where food comes from. Made with okara from tofu-making: a playful way for families to explore food. Contains wheat, egg and soy."
 	]
 ];
 function Survey() {
@@ -16209,25 +16233,26 @@ function Survey() {
 					children: [
 						index === 3 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "product-overview",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-									className: "eyebrow",
-									children: "A QUICK LOOK AT THE RANGE"
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									className: "range-grid",
-									children: products.map(([name, file, description]) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", { children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
-											src: "https://kawakami-business-survey.chiekouetsuka.chatgpt.site/assets/" + file,
-											alt: name,
-											loading: "lazy"
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { children: name }),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: description })
-									] }, name))
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Our range also includes Aburaage (thin fried tofu) and Dried Okara (soybean pulp ingredient)." })
-							]
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "eyebrow",
+								children: "A QUICK LOOK AT THE RANGE"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "range-grid",
+								children: products.map(([name, file, description, title, time, method]) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", { children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
+										src: "https://kawakami-business-survey.chiekouetsuka.chatgpt.site/assets/" + file,
+										alt: name,
+										loading: "lazy"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { children: name }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: description }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", { children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("summary", { children: title }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: time }), " · Preparation time estimate"] }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: method })
+									] })
+								] }, name))
+							})]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
 							className: "question-number",
