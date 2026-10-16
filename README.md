@@ -11,7 +11,7 @@
 | 消費者：Everyday／日常の食体験 | [Everyday LP](https://kawakami-consumer-survey.chiekouetsuka.chatgpt.site/fresh) | [Everyday アンケート](https://kawakami-consumer-survey.chiekouetsuka.chatgpt.site/fresh#q-0) |
 | 消費者：Craft／歴史と職人の技 | [Craft LP](https://kawakami-consumer-survey.chiekouetsuka.chatgpt.site/craft) | [Craft アンケート](https://kawakami-consumer-survey.chiekouetsuka.chatgpt.site/craft#q-0) |
 
-法人向け・消費者向けともに英語、全12問です。消費者向け3案の質問は共通です。
+法人向けは英語12問、消費者向けは英語14問です。消費者向け3案の質問は共通です。
 
 ## リポジトリ
 
@@ -33,4 +33,4 @@
 
 Node.js 22.13以上で `npm install`、`npm run build` を実行し、`github-pages/dist/index.html` をルートの `index.html` にコピーしてmainへコミットします。GitHub Pagesはmainのルートから公開します。
 
-回答保存と画像配信には既存のサイトサーバーを使用します。スプレッドシートへの自動転記と自動メールの配信開始は、画面公開とは別に進めています。
+回答保存と画像配信には既存のサイトサーバーを使用します。2026-10-16に3サイトのシート同期と管理者通知の送信を検証しました。構成・移管手順は [INTEGRATION.md](INTEGRATION.md) を参照してください。
