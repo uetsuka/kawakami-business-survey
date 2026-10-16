@@ -1,0 +1,6 @@
+{
+  "framework": null,
+  "buildCommand": "node vercel-build.mjs",
+  "outputDirectory": "github-pages/dist",
+  "rewrites": [{"source":"/((?!api/).*)","destination":"/index.html"}]
+}
