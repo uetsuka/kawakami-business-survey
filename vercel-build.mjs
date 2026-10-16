@@ -3,4 +3,5 @@ import fs from 'node:fs/promises';
 const file=new URL('./github-pages/dist/index.html',import.meta.url);
 let html=await fs.readFile(file,'utf8');
 html=html.replaceAll('https://kawakami-business-survey.chiekouetsuka.chatgpt.site/api/','/api/');
+html=html.replaceAll('https://kawakami-b2b-wf-preview.chiekouetsuka.chatgpt.site/','https://kawakami-b2b.vercel.app/');
 await fs.writeFile(file,html);
