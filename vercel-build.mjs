@@ -1,7 +1,13 @@
 import './github-pages/build.mjs';
 import fs from 'node:fs/promises';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const root=path.dirname(fileURLToPath(import.meta.url));
+const assetOrigin='https://kawakami-business-survey.chiekouetsuka.chatgpt.site';
 const file=new URL('./github-pages/dist/index.html',import.meta.url);
 let html=await fs.readFile(file,'utf8');
 html=html.replaceAll('https://kawakami-business-survey.chiekouetsuka.chatgpt.site/api/','/api/');
 html=html.replaceAll('https://kawakami-b2b-wf-preview.chiekouetsuka.chatgpt.site/','https://kawakami-b2b.vercel.app/');
+html=html.replaceAll(assetOrigin+'/assets/','/assets/').replaceAll(assetOrigin+'/kawakami.svg','/kawakami.svg');
+await fs.cp(path.join(root,'public'),path.join(root,'github-pages/dist'),{recursive:true});
 await fs.writeFile(file,html);
