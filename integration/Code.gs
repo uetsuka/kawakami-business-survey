@@ -2,7 +2,7 @@ const TARGET_SPREADSHEET = '1cefLWDCCha8r3bOM9a0md-pMNnSPQevjaPilA26IVGs';
 const TARGET_TABS = {consumer:'消費者アンケート回答',business:'法人アンケート回答',enquiry:'問い合わせ'};
 const DEFAULT_ADMIN = 'chiekouetsuka@outlook.jp';
 
-function doGet() { return json_({service:'Kawakami response receiver',version:1}); }
+function doGet() { return json_({service:'Kawakami response receiver',version:2}); }
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
@@ -38,7 +38,7 @@ function doPost(e) {
       row[versionColumn] = p.version;
       row[syncColumn] = new Date().toISOString();
     }
-    const submitted = p.kind !== 'consumer' || p.cells['回答状態'] === 'submitted';
+    const submitted = p.cells['回答状態'] === 'submitted' || (p.kind !== 'consumer' && !p.cells['回答状態']);
     if (submitted && !row[noticeColumn]) row[noticeColumn] = '送信待ち';
     sheet.getRange(rowNumber,1,1,headers.length).setValues([row]);
     SpreadsheetApp.flush();

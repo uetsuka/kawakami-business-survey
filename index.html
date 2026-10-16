@@ -16013,6 +16013,139 @@ var questions = [
 	}
 ];
 //#endregion
+//#region lib/leave-guard.ts
+function installLeaveGuard({ active, flush }) {
+	let dialog = null, previous = null, leaving = false;
+	const beforeUnload = (event) => {
+		if (!active() || leaving) return;
+		flush();
+		event.preventDefault();
+		event.returnValue = "";
+	};
+	const hidden = () => {
+		if (document.visibilityState === "hidden" && active()) flush();
+	};
+	const pagehide = () => {
+		if (active()) flush();
+	};
+	const click = (event) => {
+		if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || !active()) return;
+		const link = event.target?.closest?.("a");
+		if (!link || link.hasAttribute("download") || link.target && link.target !== "_self") return;
+		const destination = new URL(link.href, location.href);
+		if (!["http:", "https:"].includes(destination.protocol) || destination.origin === location.origin && destination.pathname === location.pathname && destination.search === location.search) return;
+		event.preventDefault();
+		event.stopImmediatePropagation();
+		flush();
+		if (dialog) return;
+		previous = document.activeElement;
+		dialog = document.createElement("dialog");
+		dialog.setAttribute("aria-labelledby", "leave-question");
+		dialog.style.cssText = "border:1px solid #b3945e;border-radius:12px;padding:28px;max-width:420px;width:calc(100% - 40px);background:#fffaf0;color:#291a13;box-shadow:0 14px 45px #0003;font:16px/1.6 system-ui";
+		dialog.innerHTML = "<h2 id=\"leave-question\" style=\"font:600 24px/1.3 Georgia,serif;margin:0 0 14px\">Leave before finishing?</h2><p style=\"margin:0 0 24px\">Your response is not complete. We save your progress automatically, but your entries may not be available when you return. Would you like to leave?</p><div style=\"display:flex;gap:12px;justify-content:flex-end\"><button type=\"button\" data-stay style=\"padding:12px 20px;border:1px solid #8b6f48;border-radius:7px;background:transparent;color:#291a13;cursor:pointer\">No — continue</button><button type=\"button\" data-leave style=\"padding:12px 20px;border:1px solid #a53e20;border-radius:7px;background:#a53e20;color:white;cursor:pointer\">Yes — leave</button></div>";
+		const close = () => {
+			dialog?.close();
+			dialog?.remove();
+			dialog = null;
+			previous?.focus();
+		};
+		dialog.addEventListener("cancel", (event) => {
+			event.preventDefault();
+			close();
+		});
+		dialog.querySelector("[data-stay]").addEventListener("click", close);
+		dialog.querySelector("[data-leave]").addEventListener("click", () => {
+			flush();
+			leaving = true;
+			close();
+			location.assign(destination.href);
+		});
+		document.body.appendChild(dialog);
+		dialog.showModal();
+		dialog.querySelector("[data-stay]").focus();
+	};
+	window.addEventListener("beforeunload", beforeUnload);
+	window.addEventListener("pagehide", pagehide);
+	document.addEventListener("visibilitychange", hidden);
+	document.addEventListener("click", click, true);
+	return () => {
+		window.removeEventListener("beforeunload", beforeUnload);
+		window.removeEventListener("pagehide", pagehide);
+		document.removeEventListener("visibilitychange", hidden);
+		document.removeEventListener("click", click, true);
+		dialog?.remove();
+	};
+}
+//#endregion
+//#region lib/use-draft-autosave.ts
+function useDraftAutosave(endpoint, id, payload, active, hasInput) {
+	const [state, setState] = (0, import_react.useState)("idle");
+	const current = (0, import_react.useRef)({
+		endpoint,
+		body: "",
+		active: false
+	}), revision = (0, import_react.useRef)(0);
+	const serialized = JSON.stringify(payload);
+	(0, import_react.useEffect)(() => {
+		current.current.active = active && (hasInput || !!id.current);
+		current.current.endpoint = endpoint;
+		if (!active || !hasInput && !id.current) return;
+		id.current ||= crypto.randomUUID();
+		revision.current = Math.max(Date.now(), revision.current + 1);
+		const body = JSON.stringify({
+			...JSON.parse(serialized),
+			id: id.current,
+			revision: revision.current
+		});
+		current.current.body = body;
+		let disposed = false, retry;
+		const save = async () => {
+			setState("saving");
+			try {
+				if (!(await fetch(endpoint, {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body,
+					keepalive: true
+				})).ok) throw Error();
+				if (!disposed) setState("saved");
+			} catch {
+				if (!disposed) {
+					setState("error");
+					retry = setTimeout(save, 5e3);
+				}
+			}
+		};
+		const timer = setTimeout(save, 700);
+		return () => {
+			disposed = true;
+			clearTimeout(timer);
+			clearTimeout(retry);
+		};
+	}, [
+		endpoint,
+		serialized,
+		active,
+		hasInput,
+		id
+	]);
+	(0, import_react.useEffect)(() => installLeaveGuard({
+		active: () => current.current.active,
+		flush: () => {
+			const c = current.current;
+			if (!c.active || !c.body) return;
+			const blob = new Blob([c.body], { type: "application/json" });
+			if (!navigator.sendBeacon(c.endpoint, blob)) fetch(c.endpoint, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: c.body,
+				keepalive: true
+			}).catch(() => {});
+		}
+	}), []);
+	return state;
+}
+//#endregion
 //#region app/survey.tsx
 var products = [
 	[
@@ -16089,6 +16222,30 @@ function Survey() {
 	const timer = (0, import_react.useRef)(void 0);
 	const done = questions.filter((q) => answers[q.id]?.length).length;
 	const wantsContact = !!answers.followup?.length && !answers.followup.includes("No follow-up needed");
+	const [draftFields, setDraftFields] = (0, import_react.useState)({
+		notes: "",
+		company: "",
+		name: "",
+		email: "",
+		consent: false,
+		website: ""
+	});
+	const autosave = useDraftAutosave("https://kawakami-business-survey.chiekouetsuka.chatgpt.site/api/responses/draft", id, {
+		answers,
+		...draftFields,
+		test: false
+	}, !saved, !!Object.keys(answers).length || !!draftFields.notes.trim() || !!draftFields.company.trim() || !!draftFields.name.trim() || !!draftFields.email.trim());
+	function captureFields(event) {
+		const data = new FormData(event.currentTarget);
+		setDraftFields({
+			notes: String(data.get("notes") || ""),
+			company: String(data.get("company") || ""),
+			name: String(data.get("name") || ""),
+			email: String(data.get("email") || ""),
+			consent: data.get("consent") === "on",
+			website: String(data.get("website") || "")
+		});
+	}
 	function go(index) {
 		document.getElementById(index === 12 ? "contact-details" : "q-" + index)?.scrollIntoView({
 			behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
@@ -16211,6 +16368,16 @@ function Survey() {
 					})
 				]
 			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "muted",
+				children: "Your answers and any contact details you enter are saved automatically, even if you do not finish. We use them to understand product demand. Follow-up is requested only when you submit."
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "muted",
+				role: "status",
+				"aria-live": "polite",
+				children: autosave === "saved" ? "Progress saved" : autosave === "saving" ? "Saving progress…" : autosave === "error" ? "Progress could not be saved. Retrying… Please keep this page open." : ""
+			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "survey-progress",
 				role: "status",
@@ -16226,6 +16393,7 @@ function Survey() {
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
 				onSubmit: submit,
+				onChange: captureFields,
 				children: [questions.map((q, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 					className: "question",
 					id: "q-" + index,

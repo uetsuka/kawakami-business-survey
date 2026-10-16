@@ -42,12 +42,12 @@ const businessKeys=['business','role','market','products','use','appeal','pack',
 const businessHeaders=['Q1 業態','Q2 購買への関与','Q3 対象市場','Q4 関心商品','Q5 用途','Q6 魅力・価値','Q7 希望パック','Q8 月間想定量','Q9 仕入れ要件','Q10 価格検討方法','Q11 導入時期','Q12 フォロー希望'];
 export async function syncBusiness(id:string,send=true){
  const r=await database().prepare('SELECT * FROM business_responses WHERE id=?').bind(id).first<Record<string,any>>();if(!r)return;
- const a=JSON.parse(r.answers);const cells:Record<string,unknown>={'回答ID':id,'回答日時（UTC）':new Date(r.created_at).toISOString(),'追加要件':r.notes,'会社名':r.company,'氏名':r.name,'メール':r.email,'同意':!!r.consent,'テスト回答':!!r.test};
+ const a=JSON.parse(r.answers);const cells:Record<string,unknown>={'回答ID':id,'回答日時（UTC）':new Date(r.created_at).toISOString(),'追加要件':r.notes,'会社名':r.company,'氏名':r.name,'メール':r.email,'同意':!!r.consent,'テスト回答':!!r.test,'回答状態':r.status||'submitted','最終更新日時（UTC）':new Date(r.updated_at||r.created_at).toISOString(),'回答済み質問数':businessKeys.filter(k=>a[k]?.length).length,'回答リビジョン':r.revision||0};
  businessKeys.forEach((key,i)=>cells[businessHeaders[i]]=(a[key]||[]).join('; '));
- await queueSheet('business',id,r.created_at,cells);if(send)await deliverSheets('business:'+id);
+ await queueSheet('business',id,r.updated_at||r.created_at,cells);if(send)await deliverSheets('business:'+id);
 }
 export async function syncEnquiry(id:string,send=true){
  const r=await database().prepare('SELECT * FROM enquiries WHERE id=?').bind(id).first<Record<string,any>>();if(!r)return;
- const cells={'受付ID':id,'回答日時（UTC）':new Date(r.created_at).toISOString(),'会社名':r.company,'氏名':r.name,'メール':r.email,'国・地域':r.country,'業態':r.business,'関心商品':JSON.parse(r.products).join('; '),'用途・販売チャネル':r.use,'想定数量':r.volume,'希望時期':r.timeline,'問い合わせ内容':r.details,'同意':!!r.consent,'テスト回答':!!r.test};
- await queueSheet('enquiry',id,r.created_at,cells);if(send)await deliverSheets('enquiry:'+id);
+ const cells={'受付ID':id,'回答日時（UTC）':new Date(r.created_at).toISOString(),'会社名':r.company,'氏名':r.name,'メール':r.email,'国・地域':r.country,'業態':r.business,'関心商品':JSON.parse(r.products).join('; '),'用途・販売チャネル':r.use,'想定数量':r.volume,'希望時期':r.timeline,'問い合わせ内容':r.details,'同意':!!r.consent,'テスト回答':!!r.test,'回答状態':r.status||'submitted','最終更新日時（UTC）':new Date(r.updated_at||r.created_at).toISOString(),'入力済み項目数':['company','name','email','business','use','volume','timeline','details'].filter(k=>String(r[k]||'').trim()).length+(JSON.parse(r.products).length?1:0),'回答リビジョン':r.revision||0};
+ await queueSheet('enquiry',id,r.updated_at||r.created_at,cells);if(send)await deliverSheets('enquiry:'+id);
 }
